@@ -8,16 +8,16 @@
 #define PIN_LED 5
 CRGB leds[NUM_LEDS];
 
-const char* ssid = "Vitalix_Net_TP-LINK";
-const char* password = "vit_4957840750";
+const char* ssid = "YOUR SSID";
+const char* password = "YOUR PASSWORD";
 
-//Your Domain name with URL path or IP address with path
+// Your Domain name with URL path or IP address with path
 int led_mode = 2;
 int speed = 30;
 long color = 0xFFFFFF;
-String led_link = "http://192.168.1.8:8080/led_mode";
-String color_link = "http://192.168.1.8:8080/color";
-String speed_link = "http://192.168.1.8:8080/speed";
+String led_link = "http://SERVER_URL/led_mode"; // SERVER_URL looks like 192.168.1.21:8080 
+String color_link = "http://SERVER_URL/color";
+String speed_link = "http://SERVER_URL/speed";
 
 
 void white(){
