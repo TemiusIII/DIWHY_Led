@@ -102,9 +102,6 @@ for (int i = 0; i < amount; ++i){
         cnt = 0;
         red = !red;
       }
-
-
-
     }
     FastLED.show();
       delay(wait);
@@ -130,14 +127,8 @@ if(WiFi.status()== WL_CONNECTED){
   HTTPClient http;
 
   String serverPath = link;
-
-        // Your Domain name with URL path or IP address with path
   http.begin(client, serverPath.c_str());
 
-        // If you need Node-RED/server authentication, insert user and password below
-        //http.setAuthorization("REPLACE_WITH_SERVER_USERNAME", "REPLACE_WITH_SERVER_PASSWORD");
-
-        // Send HTTP GET request
   int httpResponseCode = http.GET();
 
   if (httpResponseCode>0) {
@@ -151,10 +142,10 @@ if(WiFi.status()== WL_CONNECTED){
   // Free resources
   http.end();
 } else {
-  Serial.println("Error ebat");
+  Serial.println("Unknown Error");
 
     }
-    return "#FFFFFF"
+    return "0xFFFFFF"
 }
 
 
@@ -208,6 +199,6 @@ switch(led_mode){
 
 }
 // Serial.println(led_mode);
-// delay(100);
+// delay(100); For debug
 
 }
