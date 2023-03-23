@@ -21,6 +21,7 @@ def check_mode():
 def color_mode():
     return render_template("color.html", custom_color=custom_color[1::].upper())
 
+
 @app.route("/speed", methods=["GET", "POST"])
 def speed_mode():
     return render_template("speed.html", speed=speed)

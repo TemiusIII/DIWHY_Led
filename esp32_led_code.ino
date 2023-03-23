@@ -141,8 +141,6 @@ if(WiFi.status()== WL_CONNECTED){
   int httpResponseCode = http.GET();
 
   if (httpResponseCode>0) {
-    // Serial.print("HTTP Response code: ");
-    // Serial.println(httpResponseCode);
     String payload = http.getString();
     return(payload);
   } else {
@@ -155,8 +153,8 @@ if(WiFi.status()== WL_CONNECTED){
 } else {
   Serial.println("Error ebat");
 
-}
-
+    }
+    return "#FFFFFF"
 }
 
 
