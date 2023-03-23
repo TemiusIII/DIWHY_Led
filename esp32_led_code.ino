@@ -4,8 +4,8 @@
 #include <FastLED.h>
 
 
-#define NUM_LEDS 899
-#define PIN_LED 5
+#define NUM_LEDS 899 // Amount of LEDs in strip
+#define PIN_LED 5 // Digital pin
 CRGB leds[NUM_LEDS];
 
 const char* ssid = "YOUR SSID";
@@ -145,7 +145,7 @@ if(WiFi.status()== WL_CONNECTED){
   Serial.println("Unknown Error");
 
     }
-    return "0xFFFFFF"
+    return "0xFFFFFF";
 }
 
 
