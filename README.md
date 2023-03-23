@@ -11,29 +11,41 @@
 3. Если лента более 5 метров, то блок питания на 5В
 4. Для постоянного сервера можно использовать Raspberry Pi, но это необязательно
 
-## Использование
+## Установка
 
 1. git clone https://github.com/TemiusIII/DIWHY_Led
 2. Запустите main.py на вашем компьютере и скопируйте адресс сервера. ВАЖНО! Нужно поставить статический IP, чтобы не прошивать постоянно NODE_MCU
 
 ![image](https://user-images.githubusercontent.com/65336315/226576806-f1856700-3512-4a23-a1c1-8ddf08216c58.png)
 
-3. Вставьте адресс сервера в код esp32_led_code.ino
+    Как поставить статический IP:
+
+    Windows: https://kb.netgear.com/27476/How-do-I-set-a-static-IP-address-in-Windows
+
+    Mac OS: https://www.youtube.com/watch?v=rzyBJ0dnjBE
+
+    Linux: https://sites.cns.utexas.edu/oit-blog/blog/how-set-static-ip-linux-machine
+
+
+3. Подготовьте Arduino IDE для ESP8266
+(https://www.instructables.com/Steps-to-Setup-Arduino-IDE-for-NODEMCU-ESP8266-WiF/)
+
+4. Вставьте адресс сервера в код esp32_led_code.ino
 
 ![image](https://user-images.githubusercontent.com/65336315/226577281-68ed29c8-48e7-4e21-906e-68a893d7c51e.png)
 
-4. Вставьте логин и пароль от вашей WIFI сети в код esp32_led_code.ino
+5. Вставьте логин и пароль от вашей WIFI сети в код esp32_led_code.ino
 
 ![image](https://user-images.githubusercontent.com/65336315/226577526-042b7062-ab83-42bd-8cbd-8091a2772992.png)
 
-5. Соедините LED Ленту с GND,  5v и D5 пинами, а также добавьте дополнительное питание для подсветки при необходимости
+6. Соедините LED Ленту с GND,  5v и D5 пинами, а также добавьте дополнительное питание для подсветки при необходимости
 ![image](https://user-images.githubusercontent.com/65336315/226578253-1072ee45-4ff4-4819-a962-e89919a813d9.png)
 ![image](https://user-images.githubusercontent.com/65336315/226578270-a2597655-d4d8-459f-82ff-88df6b339a97.png)
 
 
-6. Прошейте NODE_MCU
-7. Используйте сайт для контроля подсветки
-8. Наслаждайтесь!
+7. Прошейте NODE_MCU
+8. Используйте сайт для контроля подсветки
+9. Наслаждайтесь!
 
 # Примеры использования
 
@@ -52,33 +64,44 @@ https://user-images.githubusercontent.com/65336315/226580407-4dec61cf-ea98-42c7-
 This project was created in order to help people to have LED lighting at a low cost, as well as be able to create their own effects.
 
 For a complete project you will need to purchase:
-1. Address tape (https://aliexpress.ru/item/1005001689899636.html)
+1. Address LED (https://aliexpress.ru/item/1005001689899636.html)
 2. NODE MCU (https://aliexpress.ru/item/1005001621719732.html)
-3. If the tape is more than 5 meters, then the power supply is 5V
-4. Raspberry Pi can be used for a permanent server, but this is not necessary
+3. If the LED is more than 5 meters, then the power supply is 5V
+4. Raspberry Pi can be used for a permanent hosting, but this is not necessary
 
-## Usage
+## Installation
 
 1. git clone https://github.com/TemiusIII/DIWHY_Led
 2. Run main.py on your computer and copy the server address. IMPORTANT! You need to set a static IP so as not to constantly flash NODE_MCU
 
 ![image](https://user-images.githubusercontent.com/65336315/226576806-f1856700-3512-4a23-a1c1-8ddf08216c58.png)
 
-3. Paste the server address into the code esp32_led_code.ino
+    How to set a static IP:
+
+    Windows: https://kb.netgear.com/27476/How-do-I-set-a-static-IP-address-in-Windows
+
+    Mac OS: https://www.youtube.com/watch?v=rzyBJ0dnjBE
+
+    Linux: https://sites.cns.utexas.edu/oit-blog/blog/how-set-static-ip-linux-machine
+
+3. Prepare Arduino IDE for ESP8266
+https://www.instructables.com/Steps-to-Setup-Arduino-IDE-for-NODEMCU-ESP8266-WiF/
+
+4. Paste the server address into the code esp32_led_code.ino
 ![image](https://user-images.githubusercontent.com/65336315/226577281-68ed29c8-48e7-4e21-906e-68a893d7c51e.png)
 
-4. Insert the login and password from your WIFI network into the code esp32_led_code.ino
+5. Insert the login and password from your WIFI network into the code esp32_led_code.ino
 
 ![image](https://user-images.githubusercontent.com/65336315/226577526-042b7062-ab83-42bd-8cbd-8091a2772992.png)
 
-5. Connect the LED strip to GND, 5v and D5 pins, and add additional power for backlight if needed
+6. Connect the LED strip to GND, 5v and D5 pins, and add additional power if needed
 ![image](https://user-images.githubusercontent.com/65336315/226578253-1072ee45-4ff4-4819-a962-e89919a813d9.png)
 ![image](https://user-images.githubusercontent.com/65336315/226578270-a2597655-d4d8-459f-82ff-88df6b339a97.png)
 
 
-6. Flash NODE_MCU
-7. Use the website to control LED
-8. Enjoy!
+7. Flash NODE_MCU
+8. Use the website to control LED
+9. Enjoy!
 
 # Usage example
 
