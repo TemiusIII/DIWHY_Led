@@ -4,18 +4,18 @@
 #include <FastLED.h>
 
 #define NUM_LEDS 865 // Amount of LEDs in strip
-#define PIN_LED 15     // Digital pin
-#define LED_BRIGHTNESS 100
+#define PIN_LED D1     // Digital pin
+#define LED_BRIGHTNESS 200
 #define RIPPLE_SPLIT 4 // how much you want to split ripple effect show(its too heavy for big strips) 0 to not split
 
 
-#define SERVER_URL actual_server_url
+#define SERVER_URL "LOCAL SERVER IP:PORT"
 
 
 CRGB leds[NUM_LEDS];
 
-const char *ssid = "YOUR_SSID";
-const char *password = "YOUR_PASSWORD";
+const char *ssid = "WIFI_SSID";
+const char *password = "WIFI_PASSWORD";
 // some structs for fun
 struct hsv_color{
     int hue;
@@ -33,6 +33,8 @@ struct ripple_params{
 int counter = 0;
 int led_mode = 0;
 int led_speed = 30;
+int new_year_start = 0;
+bool new_year_start_color = 1;
 long color = 0xFFFFFF;
 String led_link = String("http://") + SERVER_URL + "/led_mode";
 String color_link = String("http://") + SERVER_URL + "/color";
@@ -102,33 +104,23 @@ void strab(){
 void new_year(int wait = led_speed, int amount = 10) {
 
     CRGB colors[2] = {CRGB::Red,CRGB::White};
+    int cnt = new_year_start++;
+    bool red = new_year_start_color;
+    if (new_year_start == amount){
+      new_year_start = 0;
+      new_year_start_color = !new_year_start_color;
+    }
 
-
-
-    int cnt = 0;
-    bool red = 1;
-
-    for (int i = 0; i < amount; ++i){
-      for (int j = 0; j < NUM_LEDS; ++j){
-        leds[j] = colors[1];
+    for (int i = 0; i < NUM_LEDS; ++i){
+      leds[i] = colors[red];
+      if (++cnt == amount) {
+        cnt = 0;
+        red = !red;
       }
-      for (int j = i; j < NUM_LEDS; ++j){
-          if (red){
-            leds[j] = colors[0];
-          } else {
-            leds[j] = colors[1];
-          }
+    }
+    FastLED.show();
+    delay(wait);
 
-          cnt += 1;
-
-          if (cnt == amount){
-            cnt = 0;
-            red = !red;
-          }
-        }
-        FastLED.show();
-          delay(wait);
-      }
 }
 
 void rainbow(int wait = led_speed, int BRIGHTNESS = 255 , int SATURATION = 255) {
@@ -308,9 +300,9 @@ void loop() {
       break;
   }
 // Serial.println(led_mode);
-//delay(200); // For debug
-//Serial.println(color);
-//Serial.println(String(color_hsv.hue) + "   " + String(color_hsv.saturation) + "   " + String(color_hsv.value));
-//Serial.println(String(ripple_settings.hue_gap) + "   " + String(ripple_settings.hue_range) + "   " + String(ripple_settings.ripple_step));
-//Serial.println("\n\n\n\n\n");
+// delay(200); // For debug
+// Serial.println(color);
+// Serial.println(String(color_hsv.hue) + "   " + String(color_hsv.saturation) + "   " + String(color_hsv.value));
+// Serial.println(String(ripple_settings.hue_gap) + "   " + String(ripple_settings.hue_range) + "   " + String(ripple_settings.ripple_step));
+// Serial.println("\n\n\n\n\n");
 }
