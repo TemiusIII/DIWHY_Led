@@ -1,169 +1,199 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Управление подсветкой</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <style>
-        h1, h2, h3 {
-            text-align: center;
-        }
-
-        body {
-            background-image: linear-gradient(to right, #dd5e89, #f7bb97);
-        }
-
-        button {
-
-            background-image: linear-gradient(to right, #4568dc, #b06ab3);
-
-
-            height: 100px;
-            weight: 10px;
-
-            position: relative;
-            left: 50%;
-            transform: translate(-50%, 0);
-
-
-        }
-
-
-        form {
-            /*font-family: inherit;*/
-            /*font-size: 100%;*/
-            /*display: table;*/
-        }
-
-        .pop_up {
-
-            background-image: linear-gradient(to right, #ff5f6d, #ffc371);
-        }
-
-        .mid {
-            display: flex;
-            justify-content: center;
-        }
-
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: 100px;
-            height: 100px;
-        }
-
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        input[type="color"]::-webkit-color-swatch {
-            border: none;
-        }
-
-        input {
-
-            background-image: linear-gradient(to right, #2193b0, #6dd5ed);
-        }
-    </style>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-
+  <meta charset="UTF-8">
+  <title>DIWHY LED Controller</title>
+  <!-- Стили -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <!-- Скрипты -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
+<div class="page-container">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous">
+  <!-- Фон, заголовок в неоновом стиле -->
+  <header class="header">
+    <h1 class="neon-title">DIWHY LED Controller</h1>
+  </header>
+
+  <!-- Панель с «табу» или кнопками для переключения секций -->
+  <nav class="tabs-nav">
+    <button class="tab-btn active" onclick="showSection('led-mode')">LED Mode</button>
+    <button class="tab-btn" onclick="showSection('color')">Color</button>
+    <button class="tab-btn" onclick="showSection('speed')">Speed</button>
+    <button class="tab-btn" onclick="showSection('ripple')">Ripple</button>
+    <button class="tab-btn" onclick="showSection('hsv')">HSV</button>
+  </nav>
+
+  <!-- Основной контент. Каждая секция будет скрываться/показываться -->
+  <main class="main-content">
+    <!-- Секция: LED Mode -->
+    <section id="led-mode" class="section active">
+      <h2>LED Mode</h2>
+      <p>Текущий режим: <span id="current-mode">{{ led_mode }}</span></p>
+      <div class="mode-buttons">
+        <!-- Можно расширить список режимов -->
+        <button onclick="switchMode(0)">Режим 0</button>
+        <button onclick="switchMode(1)">Режим 1</button>
+        <button onclick="switchMode(2)">Режим 2</button>
+        <button onclick="switchMode(0)">Режим 0</button>
+        <button onclick="switchMode(1)">Режим 1</button>
+        <button onclick="switchMode(2)">Режим 2</button>
+      </div>
+    </section>
+
+    <!-- Секция: Color -->
+    <section id="color" class="section">
+      <h2>Color</h2>
+      <input type="color" id="colorPicker" value="{{ custom_color }}">
+      <button onclick="applyColor()">Применить</button>
+    </section>
+
+    <!-- Секция: Speed -->
+    <section id="speed" class="section">
+      <h2>Speed</h2>
+      <label for="speedInput">Скорость (0–1000):</label>
+      <input type="number" id="speedInput" value="{{ speed }}" min="0" max="1000">
+      <button onclick="applySpeed()">Применить</button>
+    </section>
+
+    <!-- Секция: Ripple -->
+    <section id="ripple" class="section">
+      <h2>Ripple Parameters</h2>
+      <div class="slider-group">
+        <label>Hue Gap: <span id="hue_gap_val">{{ hue_gap }}</span></label>
+        <input type="range" id="hue_gap" min="0" max="100" value="{{ hue_gap }}">
+      </div>
+      <div class="slider-group">
+        <label>Hue Range: <span id="hue_range_val">{{ hue_range }}</span></label>
+        <input type="range" id="hue_range" min="0" max="100" value="{{ hue_range }}">
+      </div>
+      <div class="slider-group">
+        <label>Ripple Step: <span id="ripple_step_val">{{ ripple_step }}</span></label>
+        <input type="range" id="ripple_step" min="0" max="100" value="{{ ripple_step }}">
+      </div>
+      <button onclick="applyRipple()">Обновить Ripple</button>
+    </section>
+
+    <!-- Секция: HSV -->
+    <section id="hsv" class="section">
+      <h2>Current Color (HSV)</h2>
+      <p id="hsv-value">—</p>
+      <button onclick="fetchHSV()">Получить HSV</button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>DIWHY LED Controller © 2025</p>
+  </footer>
+</div>
+
+<script>
+  // Инициализация значений на странице
+  const currentModeEl = document.getElementById('current-mode');
+  const colorPickerEl = document.getElementById('colorPicker');
+  const speedInputEl  = document.getElementById('speedInput');
+
+  // Слайдеры Ripple
+  const hueGapEl     = document.getElementById('hue_gap');
+  const hueRangeEl   = document.getElementById('hue_range');
+  const rippleStepEl = document.getElementById('ripple_step');
+
+  // Подписи значений Ripple
+  const hueGapValEl     = document.getElementById('hue_gap_val');
+  const hueRangeValEl   = document.getElementById('hue_range_val');
+  const rippleStepValEl = document.getElementById('ripple_step_val');
+
+  // При изменении значений слайдеров обновляем подписи
+  hueGapEl.oninput = () => hueGapValEl.textContent = hueGapEl.value;
+  hueRangeEl.oninput = () => hueRangeValEl.textContent = hueRangeEl.value;
+  rippleStepEl.oninput = () => rippleStepValEl.textContent = rippleStepEl.value;
+
+  // Функция переключения видимых секций (псевдо-«табы»)
+  function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.classList.remove('active');
+    });
+    document.getElementById(sectionId).classList.add('active');
+    // Меняем активную кнопку
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Переключение режима LED
+  function switchMode(newMode) {
+    fetch(`/set_mode/${newMode}`, { method: 'POST' })
+      .then(response => response.json())
+      .then(data => {
+        currentModeEl.textContent = data.led_mode;
+      });
+  }
+
+  // Установка цвета
+  function applyColor() {
+    const color = colorPickerEl.value;
+    fetch('/set_color', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ color })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert('Цвет обновлён: ' + data.custom_color);
+    });
+  }
+
+  // Установка скорости
+  function applySpeed() {
+    const newSpeed = parseInt(speedInputEl.value);
+    fetch('/set_speed', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ speed: newSpeed })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert('Скорость обновлена: ' + data.speed);
+    });
+  }
+
+  // Установка параметров Ripple
+  function applyRipple() {
+    const hueGapVal = parseInt(hueGapEl.value);
+    const hueRangeVal = parseInt(hueRangeEl.value);
+    const rippleStepVal = parseInt(rippleStepEl.value);
+
+    // Можно отправлять одним запросом или тремя — для наглядности отправлю тремя.
+    updateSlider('hue_gap', hueGapVal);
+    updateSlider('hue_range', hueRangeVal);
+    updateSlider('ripple_step', rippleStepVal);
+  }
+
+  function updateSlider(sliderName, sliderValue) {
+    fetch('/update_slider', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        slider_name: sliderName,
+        slider_value: sliderValue
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Slider updated:', data);
+    });
+  }
+
+  // Получение HSV
+  function fetchHSV() {
+    fetch('/color_hsv')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('hsv-value').textContent =
+          `H: ${data.h}, S: ${data.s}, V: ${data.v}`;
+      });
+  }
 </script>
 
-<h1>Выбран режим {{ led_mode }}</h1>
-<h1>Скорость эффекта {{ speed }}</h1>
-<br>
-<hr>
-<h3> Задать скорость подсветки(от 0 до 1000)<br>
-    <form method="POST" action="set_speed">
-
-        <label>Скорость</label>
-        <input name="speed" type="text">
-
-        <input type="submit" value="Задать">
-
-    </form>
-</h3>
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/0'">Выключена (0)</button>
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/1'">Белый (1)</button>
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/2'">Новый год (2)
-</button>
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/3'">Радуга (3)</button>
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/4'">Страбоскопы (4)</button>
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/5'">Свой цвет (5)</button>
-{% if led_mode==5 %}
-    <br><br>
-    <div class='mid'><input type="color" size="50" id="set_color" value="{{ custom_color }}"/></div>
-
-    <script>
-        document.getElementById("set_color").oninput = (e) => {
-            const col = e.target.value.toString();
-            console.log(col, typeof col)
-            fetch('/set_color?' + new URLSearchParams({color: col}))
-        }
-    </script>
-{% endif %}
-
-<br>
-<hr>
-<button type="button" class="btn btn-primary" onclick="document.location='/set_mode/6'">test (6)</button>
-{% if led_mode==6 %}
-    <br><br>
-    <div class='mid'><input type="color" size="50" id="set_color" value="{{ custom_color }}"/></div>
-
-    <div class="container mt-5">
-        <input type="range" class="form-range" id="hue_gap" min="0" max="50" step="1" value="{{ hue_gap }}">
-        <p>HUE gap: <span id="hue_gap_val">{{ hue_gap }}</span></p>
-
-        <input type="range" class="form-range" id="hue_range" min="0" max="30" step="1" value="{{ hue_range }}">
-        <p>HUE range: <span id="hue_range_val">{{ hue_range }}</span></p>
-
-        <input type="range" class="form-range" id="ripple_step" min="0" max="50" step="1" value="{{ hue_range }}">
-        <p>HUE range: <span id="ripple_step_val">{{ ripple_step }}</span></p>
-
-        <script src="{{ url_for('static', filename='slider.js') }}"></script>
-    </div>
-
-
-
-    <script>
-        document.getElementById("set_color").oninput = (e) => {
-            const col = e.target.value.toString();
-            console.log(col, typeof col)
-            fetch('/set_color?' + new URLSearchParams({color: col}))
-        }
-    </script>
-{% endif %}
-<br>
-<hr>
-
 </body>
-
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title if title else "DIWHY LED Controller" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" class="nav-btn">Главная</a>
+            <a href="{{ url_for('check_mode') }}" class="nav-btn">Режим LED</a>
+            <a href="{{ url_for('color_mode') }}" class="nav-btn">Цвет</a>
+            <a href="{{ url_for('speed_mode') }}" class="nav-btn">Скорость</a>
+            <a href="{{ url_for('ripple_values') }}" class="nav-btn">Ripple</a>
+            <a href="{{ url_for('color_hsv') }}" class="nav-btn">HSV</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>DIWHY LED Controller © 2025</p>
+    </footer>
+</body>
+</html>

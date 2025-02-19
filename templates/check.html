@@ -1,1 +1,18 @@
-{{led_mode}}
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Режим LED</h1>
+    <p>Текущий режим: {{ led_mode }}</p>
+    <div class="mode-buttons">
+        <button onclick="setMode(0)">Режим 0</button>
+        <button onclick="setMode(1)">Режим 1</button>
+        <button onclick="setMode(2)">Режим 2</button>
+        <!-- Добавьте дополнительные кнопки, если необходимо -->
+    </div>
+</div>
+<script>
+function setMode(newMode) {
+    window.location.href = "/set_mode/" + newMode;
+}
+</script>
+{% endblock %}

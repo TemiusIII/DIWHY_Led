@@ -1,1 +1,37 @@
-{{ hue_gap }} {{ hue_range }} {{ ripple_step }}
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Параметры Ripple</h1>
+    <div class="slider-group">
+        <label for="hue_gap">Hue Gap: <span id="hue_gap_val">{{ hue_gap }}</span></label>
+        <input type="range" id="hue_gap" min="0" max="100" value="{{ hue_gap }}" onchange="updateSlider('hue_gap', this.value)">
+    </div>
+    <div class="slider-group">
+        <label for="hue_range">Hue Range: <span id="hue_range_val">{{ hue_range }}</span></label>
+        <input type="range" id="hue_range" min="0" max="100" value="{{ hue_range }}" onchange="updateSlider('hue_range', this.value)">
+    </div>
+    <div class="slider-group">
+        <label for="ripple_step">Ripple Step: <span id="ripple_step_val">{{ ripple_step }}</span></label>
+        <input type="range" id="ripple_step" min="0" max="100" value="{{ ripple_step }}" onchange="updateSlider('ripple_step', this.value)">
+    </div>
+</div>
+<script>
+function updateSlider(sliderName, sliderValue) {
+    document.getElementById(sliderName + "_val").innerText = sliderValue;
+    fetch("/update_slider", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            slider_name: sliderName,
+            slider_value: parseInt(sliderValue)
+        })
+    }).then(response => {
+        if (!response.ok) {
+            alert("Ошибка обновления параметра");
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1,1 +1,19 @@
-{{custom_color}}
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Выбор цвета</h1>
+    <input type="color" id="colorPicker" value="#{{ custom_color }}">
+    <button onclick="setColor()">Применить</button>
+</div>
+<script>
+function setColor() {
+    const color = document.getElementById('colorPicker').value;
+    fetch("/set_color?color=" + color)
+    .then(response => {
+         if (response.ok) {
+            alert("Цвет обновлен");
+         }
+    });
+}
+</script>
+{% endblock %}

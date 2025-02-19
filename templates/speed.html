@@ -1,1 +1,11 @@
-{{speed}}
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Настройка скорости</h1>
+    <form action="/set_speed" method="POST">
+        <label for="speed">Скорость (0-1000):</label>
+        <input type="number" id="speed" name="speed" value="{{ speed }}" min="0" max="1000">
+        <button type="submit">Применить</button>
+    </form>
+</div>
+{% endblock %}
