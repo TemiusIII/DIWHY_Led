@@ -31,15 +31,16 @@
     <!-- Секция: LED Mode -->
     <section id="led-mode" class="section active">
       <h2>LED Mode</h2>
-      <p>Текущий режим: <span id="current-mode">{{ led_mode }}</span></p>
+      <p>current mode: <span id="current-mode">{{ led_mode }}</span></p>
       <div class="mode-buttons">
         <!-- Можно расширить список режимов -->
-        <button onclick="switchMode(0)">Режим 0</button>
-        <button onclick="switchMode(1)">Режим 1</button>
-        <button onclick="switchMode(2)">Режим 2</button>
-        <button onclick="switchMode(0)">Режим 0</button>
-        <button onclick="switchMode(1)">Режим 1</button>
-        <button onclick="switchMode(2)">Режим 2</button>
+        <button onclick="switchMode(0)">off</button>
+        <button onclick="switchMode(1)">white</button>
+        <button onclick="switchMode(2)">new year</button>
+        <button onclick="switchMode(3)">rainbow</button>
+        <button onclick="switchMode(4)">epileptic</button>
+        <button onclick="switchMode(5)">color</button>
+        <button onclick="switchMode(6)">test</button>
       </div>
     </section>
 
@@ -47,15 +48,15 @@
     <section id="color" class="section">
       <h2>Color</h2>
       <input type="color" id="colorPicker" value="{{ custom_color }}">
-      <button onclick="applyColor()">Применить</button>
+      <button onclick="applyColor()">apply</button>
     </section>
 
     <!-- Секция: Speed -->
     <section id="speed" class="section">
       <h2>Speed</h2>
-      <label for="speedInput">Скорость (0–1000):</label>
+      <label for="speedInput">speed (0–1000):</label>
       <input type="number" id="speedInput" value="{{ speed }}" min="0" max="1000">
-      <button onclick="applySpeed()">Применить</button>
+      <button onclick="applySpeed()">apply</button>
     </section>
 
     <!-- Секция: Ripple -->
@@ -73,14 +74,14 @@
         <label>Ripple Step: <span id="ripple_step_val">{{ ripple_step }}</span></label>
         <input type="range" id="ripple_step" min="0" max="100" value="{{ ripple_step }}">
       </div>
-      <button onclick="applyRipple()">Обновить Ripple</button>
+      <button onclick="applyRipple()">update Ripple</button>
     </section>
 
     <!-- Секция: HSV -->
     <section id="hsv" class="section">
       <h2>Current Color (HSV)</h2>
       <p id="hsv-value">—</p>
-      <button onclick="fetchHSV()">Получить HSV</button>
+      <button onclick="fetchHSV()">get HSV</button>
     </section>
   </main>
 

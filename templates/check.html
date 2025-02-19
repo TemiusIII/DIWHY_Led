@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h1>Режим LED</h1>
-    <p>Текущий режим: {{ led_mode }}</p>
+    <h1>mode LED</h1>
+    <p>current mode{{ led_mode }}</p>
     <div class="mode-buttons">
-        <button onclick="setMode(0)">Режим 0</button>
-        <button onclick="setMode(1)">Режим 1</button>
-        <button onclick="setMode(2)">Режим 2</button>
+        <button onclick="setMode(0)">off</button>
+        <button onclick="setMode(1)">white</button>
+        <button onclick="setMode(2)">new year</button>
+        <button onclick="setMode(3)">rainbow</button>
+        <button onclick="setMode(4)">epileptic</button>
+        <button onclick="setMode(5)">color</button>
+        <button onclick="setMode(6)">test</button>
         <!-- Добавьте дополнительные кнопки, если необходимо -->
     </div>
 </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <h1>Параметры Ripple</h1>
+    <h1>parameter Ripple</h1>
     <div class="slider-group">
         <label for="hue_gap">Hue Gap: <span id="hue_gap_val">{{ hue_gap }}</span></label>
         <input type="range" id="hue_gap" min="0" max="100" value="{{ hue_gap }}" onchange="updateSlider('hue_gap', this.value)">
