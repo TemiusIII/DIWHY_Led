@@ -30,3 +30,19 @@
 //         });
 //     });
 // });
+// const sakuraContainer = document.getElementById('sakura-container');
+//
+// function createSakura() {
+//     const sakura = document.createElement('div');
+//     sakura.classList.add('sakura');
+//     sakura.style.left = Math.random() * window.innerWidth + 'px';
+//     sakura.style.animationDuration = Math.random() * 5 + 3 + 's'; // Случайная скорость падения
+//     sakura.style.opacity = Math.random(); // Случайная прозрачность
+//     sakuraContainer.appendChild(sakura);
+//
+//     setTimeout(() => {
+//         sakura.remove();
+//     }, 8000); // Удаляем лепесток после падения
+// }
+//
+// setInterval(createSakura, 100);

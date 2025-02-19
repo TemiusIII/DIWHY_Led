@@ -9,6 +9,7 @@
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
+<div id="sakura-container"></div>
 <div class="page-container">
 
   <!-- Фон, заголовок в неоновом стиле -->
@@ -87,8 +88,24 @@
     <p>DIWHY LED Controller © 2025</p>
   </footer>
 </div>
-
 <script>
+  const sakuraContainer = document.getElementById('sakura-container');
+
+function createSakura() {
+    const sakura = document.createElement('div');
+    sakura.classList.add('sakura');
+    sakura.style.left = Math.random() * window.innerWidth + 'px';
+    sakura.style.animationDuration = Math.random()  + 3 + 's'; // Случайная скорость падения
+    sakura.style.opacity = Math.random(0.1, 0.5); // Случайная прозрачность
+    sakuraContainer.appendChild(sakura);
+
+    setTimeout(() => {
+        sakura.remove();
+    }, 8000); // Удаляем лепесток после падения
+}
+
+setInterval(createSakura, 700);
+
   // Инициализация значений на странице
   const currentModeEl = document.getElementById('current-mode');
   const colorPickerEl = document.getElementById('colorPicker');
