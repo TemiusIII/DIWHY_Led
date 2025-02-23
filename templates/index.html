@@ -1,217 +1,173 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>DIWHY LED Controller</title>
-  <!-- Стили -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <!-- Скрипты -->
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-</head>
-<body>
-<div id="sakura-container"></div>
-<div class="page-container">
+{% extends "base.html" %}
 
-  <!-- Фон, заголовок в неоновом стиле -->
-  <header class="header">
-    <h1 class="neon-title">DIWHY LED Controller</h1>
-  </header>
-
-  <!-- Панель с «табу» или кнопками для переключения секций -->
-  <nav class="tabs-nav">
-    <button class="tab-btn active" onclick="showSection('led-mode')">LED Mode</button>
-    <button class="tab-btn" onclick="showSection('color')">Color</button>
-    <button class="tab-btn" onclick="showSection('speed')">Speed</button>
-    <button class="tab-btn" onclick="showSection('ripple')">Ripple</button>
-    <button class="tab-btn" onclick="showSection('hsv')">HSV</button>
-  </nav>
-
-  <!-- Основной контент. Каждая секция будет скрываться/показываться -->
-  <main class="main-content">
-    <!-- Секция: LED Mode -->
+{% block content %}
     <section id="led-mode" class="section active">
-      <h2>LED Mode</h2>
-      <p>current mode: <span id="current-mode">{{ led_mode }}</span></p>
-      <div class="mode-buttons">
-        <!-- Можно расширить список режимов -->
-        <button onclick="switchMode(0)">off</button>
-        <button onclick="switchMode(1)">white</button>
-        <button onclick="switchMode(2)">new year</button>
-        <button onclick="switchMode(3)">rainbow</button>
-        <button onclick="switchMode(4)">epileptic</button>
-        <button onclick="switchMode(5)">color</button>
-        <button onclick="switchMode(6)">test</button>
-      </div>
+        <h2>LED Mode</h2>
+        <p>current mode: <span id="current-mode">{{ led_mode }}</span></p>
+        <div class="mode-buttons">
+            <button onclick="switchMode(0)">off</button>
+            <button onclick="switchMode(1)">white</button>
+            <button onclick="switchMode(2)">new year</button>
+            <button onclick="switchMode(3)">rainbow</button>
+            <button onclick="switchMode(4)">epileptic</button>
+            <button onclick="switchMode(5)">color</button>
+            <button onclick="switchMode(6)">test</button>
+        </div>
     </section>
 
-    <!-- Секция: Color -->
     <section id="color" class="section">
-      <h2>Color</h2>
-      <input type="color" id="colorPicker" value="{{ custom_color }}">
-      <button onclick="applyColor()">apply</button>
+        <h2>Color</h2>
+        <input type="color" id="colorPicker" value="{{ custom_color }}">
+        <button onclick="applyColor()">apply</button>
     </section>
 
-    <!-- Секция: Speed -->
     <section id="speed" class="section">
-      <h2>Speed</h2>
-      <label for="speedInput">speed (0–1000):</label>
-      <input type="number" id="speedInput" value="{{ speed }}" min="0" max="1000">
-      <button onclick="applySpeed()">apply</button>
+        <h2>Speed</h2>
+        <label for="speedInput">speed (0–1000):</label>
+        <input type="number" id="speedInput" value="{{ speed }}" min="0" max="1000">
+        <button onclick="applySpeed()">apply</button>
     </section>
 
-    <!-- Секция: Ripple -->
     <section id="ripple" class="section">
-      <h2>Ripple Parameters</h2>
-      <div class="slider-group">
-        <label>Hue Gap: <span id="hue_gap_val">{{ hue_gap }}</span></label>
-        <input type="range" id="hue_gap" min="0" max="100" value="{{ hue_gap }}">
-      </div>
-      <div class="slider-group">
-        <label>Hue Range: <span id="hue_range_val">{{ hue_range }}</span></label>
-        <input type="range" id="hue_range" min="0" max="100" value="{{ hue_range }}">
-      </div>
-      <div class="slider-group">
-        <label>Ripple Step: <span id="ripple_step_val">{{ ripple_step }}</span></label>
-        <input type="range" id="ripple_step" min="0" max="100" value="{{ ripple_step }}">
-      </div>
-      <button onclick="applyRipple()">update Ripple</button>
+        <h2>Ripple Parameters</h2>
+        <div class="slider-group">
+            <label>Hue Gap: <span id="hue_gap_val">{{ hue_gap }}</span></label>
+            <input type="range" id="hue_gap" min="0" max="100" value="{{ hue_gap }}">
+        </div>
+        <div class="slider-group">
+            <label>Hue Range: <span id="hue_range_val">{{ hue_range }}</span></label>
+            <input type="range" id="hue_range" min="0" max="100" value="{{ hue_range }}">
+        </div>
+        <div class="slider-group">
+            <label>Ripple Step: <span id="ripple_step_val">{{ ripple_step }}</span></label>
+            <input type="range" id="ripple_step" min="0" max="100" value="{{ ripple_step }}">
+        </div>
+        <button onclick="applyRipple()">update Ripple</button>
     </section>
 
-    <!-- Секция: HSV -->
     <section id="hsv" class="section">
-      <h2>Current Color (HSV)</h2>
-      <p id="hsv-value">—</p>
-      <button onclick="fetchHSV()">get HSV</button>
+        <h2>Current Color (HSV)</h2>
+        <p id="hsv-value">—</p>
+        <button onclick="fetchHSV()">get HSV</button>
     </section>
-  </main>
 
-  <footer class="footer">
-    <p>DIWHY LED Controller © 2025</p>
-  </footer>
-</div>
-<script>
-  const sakuraContainer = document.getElementById('sakura-container');
+    <script>
+      const sakuraContainer = document.getElementById('sakura-container');
 
 function createSakura() {
+    if (sakuraContainer.children.length >= 10) return; // Limit to 10 sakura leaves
     const sakura = document.createElement('div');
     sakura.classList.add('sakura');
-    sakura.style.left = Math.random() * window.innerWidth + 'px';
-    sakura.style.animationDuration = Math.random()  + 3 + 's'; // Случайная скорость падения
-    sakura.style.opacity = Math.random(0.1, 0.5); // Случайная прозрачность
-    sakuraContainer.appendChild(sakura);
+    const startX = Math.random() * window.innerWidth;
+    const duration = Math.random() * 3 + 3;
+    const size = Math.random() * 15 + 10;
+    const rotate = Math.random() * 360;
 
-    setTimeout(() => {
-        sakura.remove();
-    }, 8000); // Удаляем лепесток после падения
+    sakura.style.left = `${startX}px`;
+    sakura.style.width = `${size}px`;
+    sakura.style.height = `${size}px`;
+    sakura.style.opacity = 1;
+    const viewportHeight = window.innerHeight;
+    sakura.style.setProperty('--fall-distance', `${viewportHeight}px`);
+    sakura.style.animation = `fall ${duration}s linear forwards`;
+    sakura.style.transform = `rotate(${rotate}deg)`;
+
+    sakuraContainer.appendChild(sakura);
+    setTimeout(() => sakura.remove(), duration * 1000);
 }
 
 setInterval(createSakura, 700);
 
-  // Инициализация значений на странице
-  const currentModeEl = document.getElementById('current-mode');
-  const colorPickerEl = document.getElementById('colorPicker');
-  const speedInputEl  = document.getElementById('speedInput');
 
-  // Слайдеры Ripple
-  const hueGapEl     = document.getElementById('hue_gap');
-  const hueRangeEl   = document.getElementById('hue_range');
-  const rippleStepEl = document.getElementById('ripple_step');
 
-  // Подписи значений Ripple
-  const hueGapValEl     = document.getElementById('hue_gap_val');
-  const hueRangeValEl   = document.getElementById('hue_range_val');
-  const rippleStepValEl = document.getElementById('ripple_step_val');
+// Original Functionality
+const currentModeEl = document.getElementById('current-mode');
+const colorPickerEl = document.getElementById('colorPicker');
+const speedInputEl = document.getElementById('speedInput');
+const hueGapEl = document.getElementById('hue_gap');
+const hueRangeEl = document.getElementById('hue_range');
+const rippleStepEl = document.getElementById('ripple_step');
+const hueGapValEl = document.getElementById('hue_gap_val');
+const hueRangeValEl = document.getElementById('hue_range_val');
+const rippleStepValEl = document.getElementById('ripple_step_val');
 
-  // При изменении значений слайдеров обновляем подписи
-  hueGapEl.oninput = () => hueGapValEl.textContent = hueGapEl.value;
-  hueRangeEl.oninput = () => hueRangeValEl.textContent = hueRangeEl.value;
-  rippleStepEl.oninput = () => rippleStepValEl.textContent = rippleStepEl.value;
+if (hueGapEl) hueGapEl.oninput = () => hueGapValEl.textContent = hueGapEl.value;
+if (hueRangeEl) hueRangeEl.oninput = () => hueRangeValEl.textContent = hueRangeEl.value;
+if (rippleStepEl) rippleStepEl.oninput = () => rippleStepValEl.textContent = rippleStepEl.value;
 
-  // Функция переключения видимых секций (псевдо-«табы»)
-  function showSection(sectionId) {
-    document.querySelectorAll('.section').forEach(sec => {
-      sec.classList.remove('active');
-    });
+function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
-    // Меняем активную кнопку
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
-  }
+}
 
-  // Переключение режима LED
-  function switchMode(newMode) {
+function switchMode(newMode) {
     fetch(`/set_mode/${newMode}`, { method: 'POST' })
-      .then(response => response.json())
-      .then(data => {
-        currentModeEl.textContent = data.led_mode;
-      });
-  }
+        .then(response => response.json())
+        .then(data => {
+            currentModeEl.textContent = data.led_mode;
+        });
+}
 
-  // Установка цвета
-  function applyColor() {
+function applyColor() {
     const color = colorPickerEl.value;
     fetch('/set_color', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ color })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ color })
     })
     .then(res => res.json())
     .then(data => {
-      alert('Цвет обновлён: ' + data.custom_color);
+        alert('Цвет обновлён: ' + data.custom_color);
     });
-  }
+}
 
-  // Установка скорости
-  function applySpeed() {
+function applySpeed() {
     const newSpeed = parseInt(speedInputEl.value);
     fetch('/set_speed', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ speed: newSpeed })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ speed: newSpeed })
     })
     .then(res => res.json())
     .then(data => {
-      alert('Скорость обновлена: ' + data.speed);
+        alert('Скорость обновлена: ' + data.speed);
     });
-  }
+}
 
-  // Установка параметров Ripple
-  function applyRipple() {
+function applyRipple() {
     const hueGapVal = parseInt(hueGapEl.value);
     const hueRangeVal = parseInt(hueRangeEl.value);
     const rippleStepVal = parseInt(rippleStepEl.value);
 
-    // Можно отправлять одним запросом или тремя — для наглядности отправлю тремя.
     updateSlider('hue_gap', hueGapVal);
     updateSlider('hue_range', hueRangeVal);
     updateSlider('ripple_step', rippleStepVal);
-  }
+}
 
-  function updateSlider(sliderName, sliderValue) {
+function updateSlider(sliderName, sliderValue) {
     fetch('/update_slider', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        slider_name: sliderName,
-        slider_value: sliderValue
-      })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            slider_name: sliderName,
+            slider_value: sliderValue
+        })
     })
     .then(res => res.json())
     .then(data => {
-      console.log('Slider updated:', data);
+        console.log('Slider updated:', data);
     });
-  }
+}
 
-  // Получение HSV
-  function fetchHSV() {
+function fetchHSV() {
     fetch('/color_hsv')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('hsv-value').textContent =
-          `H: ${data.h}, S: ${data.s}, V: ${data.v}`;
-      });
-  }
-</script>
-
-</body>
-</html>
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('hsv-value').textContent =
+                `H: ${data.h}, S: ${data.s}, V: ${data.v}`;
+        });
+}
+    </script>
+{% endblock %}

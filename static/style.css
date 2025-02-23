@@ -1,169 +1,17 @@
-/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-/* Сбрасываем отступы */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body, html {
-  height: 100%;
-  font-family: 'Montserrat', sans-serif;
-  color: #fff;
-  background: #111;
-  overflow-x: hidden;
-}
-
-/* Для примера - фон в стиле «аниме/лофи» */
-.page-container {
-  background: url('https://i.imgur.com/7PWXSuN.jpg') no-repeat center center fixed;
-  background-size: cover;
-  min-height: 100vh;
-  backdrop-filter: brightness(0.6);
-  display: flex;
-  flex-direction: column;
-}
-
-/* Затемнение/засветка сверху */
-.page-container::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.4));
-  z-index: -1;
-}
-
-/* Шапка с неоновым заголовком */
-.header {
-  text-align: center;
-  padding: 20px;
-  background: rgba(0,0,0,0.3);
-}
-
-.neon-title {
-  font-size: 2.5rem;
-  color: #f0f0f0;
-  text-shadow:
-    0 0 5px #f0f0f0,
-    0 0 10px #f72585,
-    0 0 20px #f72585,
-    0 0 40px #f72585;
-  animation: flicker 3s infinite;
-}
-
-/* Эффект «мигания» неона */
-@keyframes flicker {
-  0%   { opacity: 1; }
-  45%  { opacity: 0.8; }
-  55%  { opacity: 0.5; }
-  70%  { opacity: 0.9; }
-  100% { opacity: 1; }
-}
-
-/* Навигация по «табу» */
-.tabs-nav {
-  display: flex;
-  justify-content: center;
-  background: rgba(0,0,0,0.3);
-  padding: 10px;
-}
-
-.tab-btn {
-  background: none;
-  border: 2px solid #f72585;
-  color: #f72585;
-  margin: 0 5px;
-  padding: 8px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: bold;
-}
-.tab-btn:hover {
-  background: #f72585;
-  color: #fff;
-}
-.tab-btn.active {
-  background: #f72585;
-  color: #fff;
-}
-
-/* Основной контент */
-.main-content {
-  flex: 1;
-  padding: 20px;
-}
-
-/* Секции (скрывать/показывать) */
-.section {
-  display: none;
-  background: rgba(0,0,0,0.4);
-  border: 2px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  margin: 10px auto;
-  max-width: 600px;
-  padding: 20px;
-  animation: fadeIn 0.5s forwards;
-}
-.section.active {
-  display: block;
-}
-
-/* Анимация появления */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.section h2 {
-  text-align: center;
-  margin-bottom: 15px;
-  text-shadow: 0 0 3px #f72585;
-}
-
-/* Общий стиль кнопок */
-button {
-  background: #7209b7;
-  border: none;
-  color: #fff;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-  margin-top: 10px;
-}
-button:hover {
-  background: #f72585;
-}
-
-/* Слайдеры и поля ввода */
-input[type="range"],
-input[type="number"],
-input[type="color"] {
-  width: 100%;
-  margin-top: 8px;
-  padding: 4px;
-  background: #222;
-  border: 1px solid #444;
-  color: #fff;
-  outline: none;
-  border-radius: 4px;
-}
-
-/* Группы слайдеров Ripple */
-.slider-group {
-  margin-bottom: 20px;
-}
-
-/* Низ страницы */
-.footer {
-  text-align: center;
-  padding: 10px;
-  background: rgba(0,0,0,0.3);
-  font-size: 0.9rem;
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    background: linear-gradient(to bottom, #2c003e, #111);
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 #sakura-container {
@@ -171,8 +19,7 @@ input[type="color"] {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Занимает всю высоту видимой области */
-    min-height: 100%; /* Занимает всю высоту документа, если есть прокрутка */
+    height: 100vh;
     pointer-events: none;
     z-index: 0;
 }
@@ -181,16 +28,201 @@ input[type="color"] {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-image: url('sakura.png'); /* Путь к изображению лепестка */
+    top: -50px;
+    background-image: url('sakura.png');
     background-size: cover;
-    animation: fall linear infinite;
+    animation: fall linear forwards;
 }
 
 @keyframes fall {
     0% {
-        transform: translateY(-10%);
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
     }
     100% {
-        transform: translateY(100vh); /* Падают до конца видимой области */
+        transform: translateY(var(--fall-distance)) rotate(360deg);
+        opacity: 0.8;
     }
+}
+
+.page-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(17,17,17,0.6);
+    backdrop-filter: brightness(0.6);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    text-align: center;
+    padding: 20px;
+}
+
+.neon-title {
+    color: #fff;
+    text-shadow:
+        0 0 5px #f72585,
+        0 0 10px #f72585,
+        0 0 15px #f72585,
+        0 0 20px #f72585,
+        0 0 30px #f72585,
+        0 0 40px #f72585,
+        0 0 50px #f72585,
+        0 0 75px #f72585;
+}
+
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.tab-btn {
+    background: none;
+    border: 2px solid #f72585;
+    color: #f72585;
+    margin: 5px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+    background: #f72585;
+    color: #fff;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.section {
+    display: none;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.6);
+    border-radius: 8px;
+    margin: 10px auto;
+    max-width: 600px;
+    padding: 20px;
+    animation: fadeIn 0.5s forwards;
+}
+
+.section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 0 0 3px #f72585;
+}
+
+button {
+    background: #7209b7;
+    border: none;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #f72585;
+}
+
+input[type="range"],
+input[type="number"],
+input[type="color"] {
+    width: 100%;
+    margin-top: 8px;
+    padding: 4px;
+    background: #222;
+    border: 1px solid #444;
+    color: #fff;
+    outline: none;
+    border-radius: 4px;
+}
+
+.slider-group {
+    margin-bottom: 20px;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background: rgba(0,0,0,0.6);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+    .section {
+        padding: 10px;
+    }
+    button {
+        padding: 8px 12px;
+    }
+}
+
+/* ...Existing styles... */
+
+/* Anime Woman Styles */
+.anime-woman {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 100px; /* Adjust based on your image */
+  height: 150px; /* Adjust based on your image */
+  background: url('/static/anime-woman.png') no-repeat center center;
+  background-size: contain;
+  z-index: 10;
+  animation: jump 2s ease-in-out infinite;
+}
+
+@keyframes jump {
+  0%, 100% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-20px);
+  }
+}
+
+#toggle-animation {
+  background: #7209b7;
+  border: none;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+#toggle-animation:hover {
+  background: #f72585;
+}
+
+@media (max-width: 600px) {
+  .anime-woman {
+      width: 60px;
+      height: 90px;
+      bottom: 10px;
+      right: 10px;
+  }
 }

@@ -3,25 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title if title else "DIWHY LED Controller" }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='script.js') }}" defer></script> Moved script to external file with defer -->
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <a href="{{ url_for('index') }}" class="nav-btn">main</a>
-            <a href="{{ url_for('check_mode') }}" class="nav-btn">mode LED</a>
-            <a href="{{ url_for('color_mode') }}" class="nav-btn">color</a>
-            <a href="{{ url_for('speed_mode') }}" class="nav-btn">speed</a>
-            <a href="{{ url_for('ripple_values') }}" class="nav-btn">Ripple</a>
-            <a href="{{ url_for('color_hsv') }}" class="nav-btn">HSV</a>
+    <div id="sakura-container"></div>
+    <div class="page-container">
+        <header class="header">
+            <h1 class="neon-title">DIWHY LED Controller</h1>
+        </header>
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="showSection('led-mode')">LED Mode</button>
+            <button class="tab-btn" onclick="showSection('color')">Color</button>
+            <button class="tab-btn" onclick="showSection('speed')">Speed</button>
+            <button class="tab-btn" onclick="showSection('ripple')">Ripple</button>
+            <!-- <button class="tab-btn" onclick="showSection('hsv')">HSV</button> -->
         </nav>
-    </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>
-        <p>DIWHY LED Controller © 2025</p>
-    </footer>
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+        <footer class="footer">
+            <p>DIWHY LED Controller © 2025</p>
+            <!-- <button id="toggle-animation" aria-label="Toggle Animation">Disable Animation</button> -->
+        </footer>
+    </div>
+    <div id="anime-woman" class="anime-woman"></div> <!-- Anime woman container -->
+    <script>
+                // Anime Woman Animation Toggle
+        const animeWoman = document.getElementById('anime-woman');
+        // const toggleButton = document.getElementById('toggle-animation');
+        let isAnimationEnabled = true;
+
+        // if (toggleButton) { // Check if toggleButton exists
+        //     toggleButton.addEventListener('click', () => {
+        //         if (isAnimationEnabled) {
+        //             animeWoman.style.animation = 'none';
+        //             toggleButton.textContent = 'Enable Animation';
+        //             alert("ON");
+        //         } else {
+        //             animeWoman.style.animation = 'jump 2s ease-in-out infinite';
+        //             toggleButton.textContent = 'Disable Animation';
+        //             alert("off");
+        //         }
+        //         isAnimationEnabled = !isAnimationEnabled;
+        //     });
+        // } else {
+        //     console.error('Toggle button not found!');
+        // }
+    </script>
 </body>
 </html>
