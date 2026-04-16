@@ -1,7 +1,13 @@
 #include <ArduinoJson.h>
 #include <FastLED.h>
 #include <WebSocketsClient.h>
+#if defined(ARDUINO_ARCH_ESP32)
 #include <WiFi.h>
+#elif defined(ARDUINO_ARCH_ESP8266)
+#include <ESP8266WiFi.h>
+#else
+#error "Only esp32 and esp8266 are supported by default"
+#endif
 
 #define NUM_LEDS 865       // Amount of LEDs in strip
 #define PIN_LED 5          // Digital pin of LED (Din)

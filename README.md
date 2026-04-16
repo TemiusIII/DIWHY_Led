@@ -2,6 +2,23 @@
 
 ## English description is lower!
 
+# чуть впадлу сейчас менять README вот как заливать через platformio код
+
+[Установить pio](https://docs.platformio.org/en/latest/core/installation/index.html)
+
+Если лень заходить
+```bash
+curl -fsSL -o get-platformio.py https://raw.githubusercontent.com/platformio/platformio-core-installer/master/get-platformio.py
+python3 get-platformio.py
+
+cd DIWHY_LED/platformio/esp32
+
+~/.platformio/penv/bin/platformio run -e esp32 --target upload
+
+-e esp32 для esp32
+-e esp8266 для nodemcu
+```
+
 ## Описание
 Этот проект был создан для того, чтобы помочь людям иметь LED подсветку по низкой цене, а также иметь возможность создавать свои эффекты.
 
