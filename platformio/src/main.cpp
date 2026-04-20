@@ -225,6 +225,7 @@ void setup() {
 
   webSocket.begin(SERVER_URL, SERVER_PORT, "/ws");
   webSocket.onEvent(webSocketEvent);
+  webSocket.enableHeartbeat(3000, 1000, 3);
   webSocket.setReconnectInterval(3000);
 
   last_update = millis(); // Using that for non-blocking delays, cause webSocket
@@ -266,7 +267,6 @@ void loop() {
   }
 
   // Can be used for debug, so left here
-
   // Serial.println(led_mode);
   // delay(200); // For debug
   // Serial.println(color);
