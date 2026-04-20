@@ -10,6 +10,7 @@ connected_clients = set()
 STATE = { # values for esp
     "led_mode": 0,
     "speed": 30,
+    "brightness": 100,
     "custom_color": 0xFFFFFF,
     "ripple": {
         'hue_gap': 10,
@@ -24,6 +25,7 @@ def index():
                            led_mode=STATE['led_mode'],
                            custom_color=STATE["custom_color"],
                            speed=STATE["speed"],
+                           brightness=STATE["brightness"],
                            hue_gap=STATE['ripple']['hue_gap'],
                            hue_range=STATE['ripple']['hue_range'],
                            ripple_step=STATE['ripple']['ripple_step'])
@@ -46,6 +48,19 @@ def set_speed():
             STATE['speed'] = new_speed
             send_to_all()
     return jsonify({"status": "ok", "speed": STATE['speed']})
+
+
+@app.route("/set_brightness", methods=["POST"])
+def set_brightness():
+    global STATE
+    new_brightness = request.json.get('brightness', None)
+    if new_brightness is not None and str(new_brightness).isdigit():
+        new_brightness = int(new_brightness)
+        if 0 <= new_brightness <= 255:
+            STATE['brightness'] = new_brightness
+            send_to_all()
+            print(new_brightness)
+    return jsonify({"status": "ok", "brightness": STATE['brightness']})
 
 @app.route("/set_color", methods=["POST"])
 def set_color():

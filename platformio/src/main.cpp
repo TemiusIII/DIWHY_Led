@@ -9,10 +9,9 @@
 #error "Only esp32 and esp8266 are supported by default"
 #endif
 
-#define NUM_LEDS 865       // Amount of LEDs in strip
-#define PIN_LED 5          // Digital pin of LED (Din)
-#define LED_BRIGHTNESS 200 // brigtness of LEDs, TODO: add control via server
-#define RIPPLE_SPLIT 4     // how much you want to split ripple effect show
+#define NUM_LEDS 865   // Amount of LEDs in strip
+#define PIN_LED 5      // Digital pin of LED (Din)
+#define RIPPLE_SPLIT 4 // how much you want to split ripple effect show
 
 #define SERVER_URL "HOST IP" // something like 192.168.1.150
 #define SERVER_PORT 8080     // flask server port
@@ -38,6 +37,7 @@ struct ripple_params {
 int counter = 0;
 int led_mode = 0;
 int led_speed = 30;
+int led_brightness = 100;
 int new_year_start = 0;
 bool new_year_start_color = 1;
 long color = 0xFFFFFF;
@@ -61,6 +61,7 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
       JsonObject data = ws_data.as<JsonObject>();
       led_mode = data["led_mode"] | led_mode;
       led_speed = data["speed"] | led_speed;
+      led_brightness = data["brightness"] | led_brightness;
       color = data["custom_color"] | color;
 
       JsonObject ripple = data["ripple"];
@@ -71,6 +72,8 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length) {
         ripple_settings.ripple_step =
             ripple["ripple_step"] | ripple_settings.ripple_step;
       }
+
+      FastLED.setBrightness(led_brightness); // don't want to change in loop()
     } else {
       Serial.printf("JSON error: %s\n", error.c_str());
     }
@@ -211,7 +214,7 @@ void rippleTick() {
 void setup() {
   Serial.begin(115200);
   FastLED.addLeds<NEOPIXEL, PIN_LED>(leds, NUM_LEDS);
-  FastLED.setBrightness(LED_BRIGHTNESS);
+  FastLED.setBrightness(led_brightness);
 
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
@@ -270,6 +273,7 @@ void loop() {
   // Serial.println(led_mode);
   // delay(200); // For debug
   // Serial.println(color);
+  Serial.println(led_brightness);
   // Serial.println(String(color_hsv.hue) + "   " + String(color_hsv.saturation)
   // + "   " + String(color_hsv.value));
   // Serial.println(String(ripple_settings.hue_gap) + "   " +
